@@ -1,8 +1,8 @@
 package multiplexer
 
 import (
-	"github.com/Pandentia/protoplex/protoplex/protocols"
 	"github.com/rs/zerolog"
+	"github.com/zekker6/protoplex/protoplex/protocols"
 	"net"
 	"os"
 	"strconv"

@@ -18,7 +18,7 @@ firewalls that block all other outbound ports.
 Assuming you have a properly configured Go setup, get and compile the multiplexer with
 
 ```bash
-go get github.com/Pandentia/protoplex/cmd/protoplex
+go get github.com/zekker6/protoplex/cmd/protoplex
 ```
 
 and then run it with (for example, to run SSH and HTTPS)
@@ -63,7 +63,7 @@ Currently supported protocols are:
 - OpenVPN
 - SOCKS4 / SOCKS5
 
-Feel free to [file an issue](https://github.com/Pandentia/protoplex/issues/new)
+Feel free to [file an issue](https://github.com/zekker6/protoplex/issues/new)
 on the GitHub repository if you want a protocol to be supported. Please include
 steps to accurately reproduce your client setup.
 

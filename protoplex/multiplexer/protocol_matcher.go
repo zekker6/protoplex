@@ -2,7 +2,7 @@ package multiplexer
 
 import (
 	"bytes"
-	"github.com/Pandentia/protoplex/protoplex/protocols"
+	"github.com/zekker6/protoplex/protoplex/protocols"
 )
 
 // DetermineProtocol determines a Protocol based on a given handshake
