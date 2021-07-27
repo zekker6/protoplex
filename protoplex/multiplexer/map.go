@@ -22,7 +22,7 @@ func NewTTlMap(ln int, maxTTL int) (m *TTLMap) {
 			m.l.Lock()
 			for k, v := range m.m {
 				if now.Unix()-v.lastAccess > int64(maxTTL) {
-					m.m[k].value.Conn.Close()
+					m.m[k].value.ProxyConnection.Close()
 
 					delete(m.m, k)
 				}

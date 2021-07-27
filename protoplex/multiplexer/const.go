@@ -1,5 +1,5 @@
 package multiplexer
 
 const (
-	defaultBufSize = 1024
+	defaultBufSize = 1024 * 64
 )

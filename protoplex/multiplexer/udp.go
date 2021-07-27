@@ -13,13 +13,14 @@ type UDPServer struct {
 	protocols []*protocols.Protocol
 	logger    zerolog.Logger
 
-	state *TTLMap
+	state    *TTLMap
+	listener *net.UDPConn
 }
 
 type connState struct {
-	Protocol *protocols.Protocol
-	Read     []byte
-	Conn     *net.UDPConn
+	Protocol        *protocols.Protocol
+	Read            []byte
+	ProxyConnection *net.UDPConn
 }
 
 func NewUDPServer(p []*protocols.Protocol, logger zerolog.Logger) *UDPServer {
@@ -65,6 +66,7 @@ func (s *UDPServer) Run(bind string) {
 	addr := s.parseIP(bind)
 
 	listener, err := net.ListenUDP("udp", addr)
+	s.listener = listener
 
 	if err != nil {
 		s.logger.Fatal().Str("bind", bind).Err(err).Msg("Unable to create listener.")
@@ -75,16 +77,18 @@ func (s *UDPServer) Run(bind string) {
 	s.logger.Info().Str("protocol", "udp").Str("bind", addr.String()).Msg("Listening...")
 	for {
 		buffer := make([]byte, defaultBufSize)
-		_, addr, err := listener.ReadFromUDP(buffer)
+		readBytes, addr, err := listener.ReadFromUDP(buffer)
 		if err != nil {
 			s.logger.Debug().Err(err).Msg("Error while accepting connection.")
 		}
 
-		s.handle(buffer, addr)
+		s.handle(buffer, readBytes, addr)
 	}
 }
 
-func (s *UDPServer) handle(buffer []byte, addr *net.UDPAddr) {
+func (s *UDPServer) handle(buffer []byte, readBytes int, addr *net.UDPAddr) {
+	buffer = buffer[:readBytes]
+
 	key := addr.String()
 	localLogger := s.logger.With().Str("addr", key).Logger()
 
@@ -92,7 +96,7 @@ func (s *UDPServer) handle(buffer []byte, addr *net.UDPAddr) {
 		localLogger.Info().Msg("using cached connection")
 		state := s.state.Get(key)
 
-		_, err := state.Conn.Write(buffer)
+		_, err := state.ProxyConnection.Write(buffer)
 		if err != nil {
 			localLogger.Err(err).Msg("failed to send data to target")
 		}
@@ -107,19 +111,48 @@ func (s *UDPServer) handle(buffer []byte, addr *net.UDPAddr) {
 	}
 	remoteAddr := s.parseIP(protocol.Target)
 
-	conn, err := net.DialUDP("udp", nil, remoteAddr)
+	proxyConnection, err := net.DialUDP("udp", nil, remoteAddr)
+
 	if err != nil {
 		localLogger.Err(err).Str("target", protocol.Target).Msg("failed to connect to target")
 		return
 	}
 
 	state := connState{
-		Protocol: protocol,
-		Conn:     conn,
+		Protocol:        protocol,
+		ProxyConnection: proxyConnection,
 	}
 
 	s.state.Put(key, state)
 
-	s.handle(buffer, addr)
+	go s.proxy(proxyConnection, addr, localLogger.With().Str("direction", "s->c").Logger())
+
+	s.handle(buffer, readBytes, addr)
 	return
+}
+
+func (s *UDPServer) proxy(src *net.UDPConn, dstAddr *net.UDPAddr, logger zerolog.Logger) {
+	logger = logger.With().Str("module", "udp-proxy").Logger()
+
+	for {
+		buf := make([]byte, defaultBufSize)
+
+		read, _, err := src.ReadFromUDP(buf)
+		logger.Debug().Str("addr", dstAddr.String()).Msg("sending data")
+		if err != nil {
+			logger.Err(err).Msg("failed to read data from client")
+			return
+		}
+
+		wrote, err := s.listener.WriteTo(buf[:read], dstAddr)
+		if err != nil {
+			logger.Err(err).Msg("failed to read data from client")
+			return
+		}
+
+		if read != wrote {
+			logger.Warn().Int("wrote", wrote).Int("read", read).Msg("mismatched written and read data")
+		}
+	}
+
 }
