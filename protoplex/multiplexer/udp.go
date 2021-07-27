@@ -17,7 +17,7 @@ type UDPServer struct {
 	listener *net.UDPConn
 }
 
-type connState struct {
+type ConnState struct {
 	Protocol        *protocols.Protocol
 	Read            []byte
 	ProxyConnection *net.UDPConn
@@ -93,7 +93,7 @@ func (s *UDPServer) handle(buffer []byte, readBytes int, addr *net.UDPAddr) {
 	localLogger := s.logger.With().Str("addr", key).Logger()
 
 	if s.state.Has(key) {
-		localLogger.Info().Msg("using cached connection")
+		localLogger.Debug().Msg("using cached connection")
 		state := s.state.Get(key)
 
 		_, err := state.ProxyConnection.Write(buffer)
@@ -102,7 +102,7 @@ func (s *UDPServer) handle(buffer []byte, readBytes int, addr *net.UDPAddr) {
 		}
 		return
 	}
-	localLogger.Info().Msg("building new connection ")
+	localLogger.Debug().Msg("building new connection ")
 
 	protocol := DetermineProtocol(buffer, s.protocols)
 	if protocol == nil {
@@ -118,7 +118,7 @@ func (s *UDPServer) handle(buffer []byte, readBytes int, addr *net.UDPAddr) {
 		return
 	}
 
-	state := connState{
+	state := ConnState{
 		Protocol:        protocol,
 		ProxyConnection: proxyConnection,
 	}

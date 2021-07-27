@@ -6,7 +6,7 @@ import (
 )
 
 type item struct {
-	value      connState
+	value      ConnState
 	lastAccess int64
 }
 
@@ -37,7 +37,7 @@ func (m *TTLMap) Len() int {
 	return len(m.m)
 }
 
-func (m *TTLMap) Put(k string, v connState) {
+func (m *TTLMap) Put(k string, v ConnState) {
 	m.l.Lock()
 	it, ok := m.m[k]
 	if !ok {
@@ -48,7 +48,7 @@ func (m *TTLMap) Put(k string, v connState) {
 	m.l.Unlock()
 }
 
-func (m *TTLMap) Get(k string) (v connState) {
+func (m *TTLMap) Get(k string) (v ConnState) {
 	m.l.Lock()
 	if it, ok := m.m[k]; ok {
 		v = it.value
