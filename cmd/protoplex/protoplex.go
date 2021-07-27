@@ -2,11 +2,11 @@ package main
 
 import (
 	"fmt"
-	"github.com/Pandentia/protoplex/protoplex/multiplexer"
+	"github.com/zekker6/protoplex/protoplex/multiplexer"
+	"github.com/zekker6/protoplex/protoplex/protocols"
 	"os"
 	"sync"
 
-	"github.com/Pandentia/protoplex/protoplex/protocols"
 	"github.com/rs/zerolog"
 	"gopkg.in/alecthomas/kingpin.v2"
 )
