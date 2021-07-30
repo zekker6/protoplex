@@ -62,6 +62,7 @@ Currently supported protocols are:
 - TLS (/ HTTPS)
 - OpenVPN
 - SOCKS4 / SOCKS5
+- Wireguard
 
 Feel free to [file an issue](https://github.com/zekker6/protoplex/issues/new)
 on the GitHub repository if you want a protocol to be supported. Please include
