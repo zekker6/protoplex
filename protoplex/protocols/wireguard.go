@@ -1,6 +1,6 @@
 package protocols
 
-// NewWireguardProtocol initializes a Protocol with a TLS signature.
+// NewWireguardProtocol initializes a Protocol with a Wireguard signature.
 func NewWireguardProtocol(targetAddress string) *Protocol {
 	return &Protocol{
 		Name:            "Wireguard",

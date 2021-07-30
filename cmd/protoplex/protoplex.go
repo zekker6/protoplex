@@ -11,8 +11,11 @@ import (
 	"gopkg.in/alecthomas/kingpin.v2"
 )
 
-var version string
-
+var (
+	version string
+	commit  string
+	date    string
+)
 var (
 	app    = kingpin.New("protoplex", "A fast and simple protocol multiplexer.")
 	logger = zerolog.New(os.Stdout).With().Timestamp().Logger()
@@ -40,7 +43,7 @@ func printVersion() {
 		os.Exit(1)
 		return
 	}
-	fmt.Println(version)
+	fmt.Printf("Version: %s, Commit: %s, Date: %s", version, commit, date)
 	os.Exit(0)
 }
 
