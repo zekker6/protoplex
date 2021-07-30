@@ -1,10 +1,11 @@
 # build
 FROM golang:1-alpine AS build
 
-RUN apk add git
-RUN mkdir -p /go/src/github.com/Pandentia
-COPY ./ /go/src/github.com/zekker6/protoplex
-RUN go get github.com/zekker6/protoplex/cmd/protoplex
+WORKDIR /app
+
+COPY ./ ./
+
+RUN cd cmd/protoplex  && go build -o /go/bin/protoplex
 
 # deploy
 FROM alpine:latest
