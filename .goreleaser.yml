@@ -23,5 +23,5 @@ changelog:
       - '^test:'
 dockers:
   - image_templates:
-      - "ghcr.io/zekker6/traefik-hosts-generator:latest"
-      - "ghcr.io/zekker6/traefik-hosts-generator:{{ .Tag }}"
+      - "ghcr.io/zekker6/protoplex:latest"
+      - "ghcr.io/zekker6/protoplex:{{ .Tag }}"
