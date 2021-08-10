@@ -2,7 +2,7 @@
 
 *An application protocol multiplexer*
 
-[![Build Status](https://cloud.drone.io/api/badges/Pandentia/protoplex/status.svg?ref=refs/heads/mistress)](https://cloud.drone.io/Pandentia/protoplex)
+![release](https://github.com/zekker6/protoplex/actions/workflows/goreleaser.yml/badge.svg)
 
 ## What is this?
 
@@ -33,7 +33,7 @@ For more extensive configuration, please see the output of `--help`.
 
 ### Docker
 
-[A docker image may be used](https://hub.docker.com/r/pandentia/protoplex)
+[A docker image may be used](https://github.com/zekker6/protoplex/pkgs/container/protoplex)
 for ease of use and deployment.
 
 ## Goals
