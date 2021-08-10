@@ -21,3 +21,7 @@ changelog:
     exclude:
       - '^docs:'
       - '^test:'
+dockers:
+  - image_templates:
+      - "ghcr.io/zekker6/traefik-hosts-generator:latest"
+      - "ghcr.io/zekker6/traefik-hosts-generator:{{ .Tag }}"
