@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/rs/zerolog v1.29.0
-	gopkg.in/alecthomas/kingpin.v2 v2.2.6
+	gopkg.in/alecthomas/kingpin.v2 v2.3.1
 )
 
 require (
