@@ -1,12 +1,13 @@
 package multiplexer
 
 import (
-	"github.com/rs/zerolog"
-	"github.com/zekker6/protoplex/protoplex/protocols"
 	"net"
 	"os"
 	"strconv"
 	"strings"
+
+	"github.com/rs/zerolog"
+	"github.com/zekker6/protoplex/protoplex/protocols"
 )
 
 type UDPServer struct {
@@ -128,7 +129,6 @@ func (s *UDPServer) handle(buffer []byte, readBytes int, addr *net.UDPAddr) {
 	go s.proxy(proxyConnection, addr, localLogger.With().Str("direction", "s->c").Logger())
 
 	s.handle(buffer, readBytes, addr)
-	return
 }
 
 func (s *UDPServer) proxy(src *net.UDPConn, dstAddr *net.UDPAddr, logger zerolog.Logger) {

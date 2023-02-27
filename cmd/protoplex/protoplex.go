@@ -2,13 +2,14 @@ package main
 
 import (
 	"fmt"
-	"github.com/zekker6/protoplex/protoplex/multiplexer"
-	"github.com/zekker6/protoplex/protoplex/protocols"
 	"os"
 	"sync"
 
+	"github.com/zekker6/protoplex/protoplex/multiplexer"
+	"github.com/zekker6/protoplex/protoplex/protocols"
+
+	"github.com/alecthomas/kingpin/v2"
 	"github.com/rs/zerolog"
-	"gopkg.in/alecthomas/kingpin.v2"
 )
 
 var (
