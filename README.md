@@ -2,7 +2,7 @@
 
 *An application protocol multiplexer*
 
-![release](https://github.com/zekker6/protoplex/actions/workflows/goreleaser.yml/badge.svg)
+[![release](https://github.com/zekker6/protoplex/actions/workflows/goreleaser.yml/badge.svg)](https://github.com/zekker6/protoplex/actions/workflows/goreleaser.yml)
 
 ## What is this?
 
