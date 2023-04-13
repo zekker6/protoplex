@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/alecthomas/kingpin/v2 v2.3.2
-	github.com/rs/zerolog v1.29.0
+	github.com/rs/zerolog v1.29.1
 )
 
 require (
