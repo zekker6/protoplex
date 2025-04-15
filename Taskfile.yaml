@@ -1,0 +1,28 @@
+version: '3'
+
+tasks:
+  default:
+    cmds:
+      - task --list-all
+
+  lint:
+    deps:
+      - vet
+      - fmt
+      - golangci
+
+  vet:
+    cmds:
+      - go vet ./...
+
+  fmt:
+    cmds:
+      - gofmt -l -w -s ./
+
+  golangci:
+    cmds:
+      - golangci-lint run --modules-download-mode readonly --timeout=10m
+
+  test:
+    cmds:
+      - go test ./...
