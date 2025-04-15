@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/rs/zerolog"
+
 	"github.com/zekker6/protoplex/protoplex/protocols"
 )
 
@@ -74,7 +75,7 @@ func (s *UDPServer) Run(bind string) {
 		os.Exit(1)
 	}
 
-	defer listener.Close()
+	defer func() { _ = listener.Close() }()
 	s.logger.Info().Str("protocol", "udp").Str("bind", addr.String()).Msg("Listening...")
 	for {
 		buffer := make([]byte, defaultBufSize)

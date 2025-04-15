@@ -1,11 +1,13 @@
 package multiplexer
 
 import (
-	"github.com/rs/zerolog"
-	"github.com/zekker6/protoplex/protoplex/protocols"
 	"net"
 	"os"
 	"time"
+
+	"github.com/rs/zerolog"
+
+	"github.com/zekker6/protoplex/protoplex/protocols"
 )
 
 type TCPServer struct {
@@ -36,7 +38,7 @@ func (s *TCPServer) Run(bind string) {
 		s.logger.Fatal().Str("bind", bind).Err(err).Msg("Unable to create listener.")
 		os.Exit(1)
 	}
-	defer listener.Close()
+	defer func() { _ = listener.Close() }()
 	s.logger.Info().Str("bind", listener.Addr().String()).Str("protocol", "tcp").Msg("Listening...")
 	for {
 		conn, err := listener.Accept()
@@ -49,7 +51,8 @@ func (s *TCPServer) Run(bind string) {
 
 // handle connects a net.Conn with a proxy target given a list of protocols
 func (s *TCPServer) handle(conn net.Conn) {
-	defer conn.Close() // the connection must close after this goroutine exits
+	// the connection must close after this goroutine exits
+	defer func() { _ = conn.Close() }()
 
 	localLogger := s.logger.With().Str("module", "handler").Str("ip", conn.RemoteAddr().String()).Logger()
 
@@ -80,7 +83,7 @@ func (s *TCPServer) handle(conn net.Conn) {
 		localLogger.Debug().Err(err).Msg("Remote connection unsuccessful.")
 		return // we were unable to establish the connection with the proxy target
 	}
-	defer targetConn.Close()
+	defer func() { _ = targetConn.Close() }()
 	_, err = targetConn.Write(identifyBuffer[:n]) // tell them everything they just told us
 	if err != nil {
 		localLogger.Debug().Err(err).Msg("Remote disconnected us during identify.")
