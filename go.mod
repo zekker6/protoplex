@@ -6,7 +6,7 @@ toolchain go1.26.2
 
 require (
 	github.com/alecthomas/kingpin/v2 v2.4.0
-	github.com/rs/zerolog v1.34.0
+	github.com/rs/zerolog v1.35.1
 )
 
 require (
